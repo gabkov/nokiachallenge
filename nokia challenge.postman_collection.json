@@ -1,0 +1,221 @@
+{
+	"info": {
+		"_postman_id": "776277c4-6417-48e6-a085-4c2b781f78c2",
+		"name": "nokia challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Train tracking",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/items",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Track switch",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/control/track_switch/x/y",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"control",
+						"track_switch",
+						"x",
+						"y"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lap time measuring",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/track/statistics/lap_time",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"track",
+						"statistics",
+						"lap_time"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Train control 900",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{controllhost}}/motor?params=900",
+					"host": [
+						"{{controllhost}}"
+					],
+					"path": [
+						"motor"
+					],
+					"query": [
+						{
+							"key": "params",
+							"value": "900"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Train control 0",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{controllhost}}/motor?params=0",
+					"host": [
+						"{{controllhost}}"
+					],
+					"path": [
+						"motor"
+					],
+					"query": [
+						{
+							"key": "params",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Train control 1023",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{controllhost}}/motor?params=1023",
+					"host": [
+						"{{controllhost}}"
+					],
+					"path": [
+						"motor"
+					],
+					"query": [
+						{
+							"key": "params",
+							"value": "1023"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Train control 600",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{controllhost}}/motor?params=1023",
+					"host": [
+						"{{controllhost}}"
+					],
+					"path": [
+						"motor"
+					],
+					"query": [
+						{
+							"key": "params",
+							"value": "1023"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "01a41643-5d89-4615-83d2-8af13da92e7c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "aa4352c1-6c66-45c7-a76a-50b3f5587112",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "eb015b98-0ed2-41fd-97e7-db8864411b0c",
+			"key": "host",
+			"value": "http://192.168.0.100:5000/rest",
+			"type": "string"
+		},
+		{
+			"id": "3b4ec2ee-0bd5-4358-b85d-63b59a26ef68",
+			"key": "controllhost",
+			"value": "192.168.0.180",
+			"type": "string"
+		}
+	]
+}
