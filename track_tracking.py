@@ -1,4 +1,5 @@
 import time
+import threading
 
 import requests
 
@@ -7,21 +8,21 @@ url = 'http://192.168.0.100:5000/rest/items'
 last_reached_pin = "11"
 
 pins = {
-    "11": {"state": 0, "timestamp": 0},
-    "12": 0,
-    "13": 0,
-    "21": 0,
-    "22": 0,
-    "23": 0,
-    "24": 0,
-    "25": 0,
-    "26": 0,
-    "27": 0,
-    "31": 0,
-    "32": 0,
-    "33": 0,
-    "34": 0,
-    "35": 0,
+    "11": {"state": 0, "next_pin": 26},
+    "12": {"state": 0, "next_pin": 11},
+    "13": {"state": 0, "next_pin": 12},
+    "21": {"state": 0, "next_pin": 27},
+    "22": {"state": 0, "next_pin": 35},
+    "23": {"state": 0, "next_pin": 34},
+    "24": {"state": 0, "next_pin": 23},
+    "25": {"state": 0, "next_pin": 13},
+    "26": {"state": 0, "next_pin": 24},
+    "27": {"state": 0, "next_pin": 25},
+    "31": {"state": 0, "next_pin": 32},
+    "32": {"state": 0, "next_pin": 21},
+    "33": {"state": 0, "next_pin": 31},
+    "34": {"state": 0, "next_pin": 33},
+    "35": {"state": 0, "next_pin": 33}
 }
 
 
@@ -34,39 +35,49 @@ def startup():
     resp = requests.get(url=url)
     data = resp.json()
     rail_sections = data["track"]["rail_sections"]
-    timestamp = int(round(time.time() * 1000))
     for key in pins:
         pins[key]["state"] = rail_sections[key]["state"]
-        pins[key]["timestamp"] = timestamp
-    time.sleep(0.1)
+    time.sleep(.1)
 
 
 def tracking():
     global last_reached_pin
-    prev_pin = last_reached_pin
+    next_pin = pins[last_reached_pin]["next_pin"]
     resp = requests.get(url=url)
     data = resp.json()
-    rail_sections = data["track"]["rail_sections"]
-    timestamp = int(round(time.time() * 1000))
-    for key in pins:
-        if pins[key]["state"] == 0:
-            if rail_sections[key]["state"] == 1 and pins[key]["timestamp"] + 100 < timestamp:
-                pins[key]["state"] = 1
-                pins[key]["timestamp"] = timestamp
-                last_reached_pin = key
-        if pins[key] == 1:
-            if rail_sections[key]["state"] == 0 and pins[key]["timestamp"] + 100 < timestamp:
-                pins[key]["state"] = 0
-                pins[key]["timestamp"] = timestamp
-    if last_reached_pin != prev_pin:
-        print(last_reached_pin)
+    req_pin_state = data["track"]["rail_sections"][next_pin]["state"]
+    if req_pin_state == 1:
+        print(next_pin)
+        last_reached_pin = next_pin
+
+    #timestamp = int(time.time() * 1000)
+    # for key in pins:
+    #     if pins[key]["state"] == 0:
+    #         if rail_sections[key]["state"] == 1 and pins[key]["timestamp"] + 100 < timestamp:
+    #             pins[key]["state"] = 1
+    #             pins[key]["timestamp"] = timestamp
+    #             last_reached_pin = key
+    #     if pins[key] == 1:
+    #         if rail_sections[key]["state"] == 0 and pins[key]["timestamp"] + 100 < timestamp:
+    #             pins[key]["state"] = 0
+    #             pins[key]["timestamp"] = timestamp
+    # if last_reached_pin != prev_pin:
+    #     print(last_reached_pin)
+
+
     time.sleep(.1)
 
 
 def main():
     startup()
+    #train_tracking_thread = threading.Thread(target=continuous_tracking, daemon=True, name="trainTrackingThread")
+    #train_tracking_thread.start()
+    continuous_tracking()
     while True:
-        continuous_tracking()
+        time.sleep(1)
+        #print("main is running")
+        #print("current threads: ")
+        #print(threading.enumerate())
 
 
 if __name__ == '__main__':
