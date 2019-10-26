@@ -5,24 +5,26 @@ import requests
 
 url = 'http://192.168.0.100:5000/rest/items'
 
+speed_url = "http://192.168.0.180/motor?params="
+
 last_reached_pin = "11"
 
 pins = {
-    "11": {"state": 0, "next_pin": 26},
-    "12": {"state": 0, "next_pin": 11},
-    "13": {"state": 0, "next_pin": 12},
-    "21": {"state": 0, "next_pin": 27},
-    "22": {"state": 0, "next_pin": 35},
-    "23": {"state": 0, "next_pin": 34},
-    "24": {"state": 0, "next_pin": 23},
-    "25": {"state": 0, "next_pin": 13},
-    "26": {"state": 0, "next_pin": 24},
-    "27": {"state": 0, "next_pin": 25},
-    "31": {"state": 0, "next_pin": 32},
-    "32": {"state": 0, "next_pin": 21},
-    "33": {"state": 0, "next_pin": 31},
-    "34": {"state": 0, "next_pin": 33},
-    "35": {"state": 0, "next_pin": 33}
+    "11": {"state": 0, "next_pin": 26, "speed": 550},
+    "26": {"state": 0, "next_pin": 24, "speed": 1000},
+    "24": {"state": 0, "next_pin": 23, "speed": 1000},
+    "23": {"state": 0, "next_pin": 34, "speed": 1000},
+    "34": {"state": 0, "next_pin": 33, "speed": 1000},
+    "33": {"state": 0, "next_pin": 31, "speed": 1000},
+    "31": {"state": 0, "next_pin": 32, "speed": 700},
+    "32": {"state": 0, "next_pin": 21, "speed": 600},
+    "21": {"state": 0, "next_pin": 27, "speed": 1000},
+    "27": {"state": 0, "next_pin": 25, "speed": 600},
+    "25": {"state": 0, "next_pin": 13, "speed": 550},
+    "13": {"state": 0, "next_pin": 12, "speed": 600},
+    "12": {"state": 0, "next_pin": 11, "speed": 1000},
+    "35": {"state": 0, "next_pin": 33, "speed": 1000},
+    "22": {"state": 0, "next_pin": 35, "speed": 1000}
 }
 
 
@@ -56,6 +58,8 @@ def tracking():
     if req_pin_state == 0:
         print(next_pin)
         last_reached_pin = next_pin
+        requests.get(url=speed_url + str(pins[next_pin]["speed"]))
+
 
     #timestamp = int(time.time() * 1000)
     # for key in pins:
