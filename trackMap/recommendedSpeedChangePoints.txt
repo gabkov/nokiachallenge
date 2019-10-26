@@ -1,0 +1,15 @@
+slow 13 11 31 24
+moderate 22 33
+accel 23 
+
+Lap Plan
+25 accel 
+13 slower
+12 accel
+11 slower
+
+23 accel    22 moderate
+34 speed    35 slower
+            33 speed
+31 slower
+21 moderate
