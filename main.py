@@ -3,7 +3,7 @@ import cv2
 import time
 
 #file_name = 'C:/Users/csiga/Downloads/nokiavideos/pivideo3.mp4'
-file_name = 'D:/codes/hackaton/nokia/output6.avi'
+file_name = 'C:/Users/503127349/Desktop/Junction/pivideo3.mp4'
 
 cap = cv2.VideoCapture(file_name)
 
@@ -22,25 +22,25 @@ time.sleep(2)
 while True:
     ret, image = cap.read()
 # define the list of boundaries
-    boundaries = [
-        ([86, 31, 4], [246, 96, 57])
-        #([17, 15, 100], [50, 56, 200]),
-        #([25, 146, 190], [62, 174, 250]),
-        #([103, 86, 65], [145, 133, 128])
-    ]
 
-    # loop over the boundaries
-    for (lower, upper) in boundaries:
-        # create NumPy arrays from the boundaries
-        lower = np.array(lower, dtype="uint8")
-        upper = np.array(upper, dtype="uint8")
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-        # find the colors within the specified boundaries and apply
-        # the mask
-        mask = cv2.inRange(image, lower, upper)
-        output = cv2.bitwise_and(image, image, mask=mask)
 
-        imageOut = np.hstack([image, output])
+    #blue
+    low = np.array([100, 50, 50])
+    high = np.array([140, 255, 255])
+
+    #red
+    redLow = np.array([0,100,100])
+    redHigh = np.array([10,255,200])
+    # find the colors within the specified boundaries and apply
+    # the mask
+    redMask = cv2.inRange(hsv, redLow, redHigh)
+    blueMask = cv2.inRange(hsv, low, high)
+    blueOutput = cv2.bitwise_and(image, image, mask=blueMask)
+    redOutput = cv2.bitwise_and(image, image, mask=redMask)
+
+    imageOut = np.hstack([image, blueOutput])
 
     # Display the resulting frame
     cv2.imshow('RGB', imageOut)
