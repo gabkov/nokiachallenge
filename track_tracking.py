@@ -32,21 +32,28 @@ def continuous_tracking():
 
 
 def startup():
-    resp = requests.get(url=url)
-    data = resp.json()
-    rail_sections = data["track"]["rail_sections"]
-    for key in pins:
-        pins[key]["state"] = rail_sections[key]["state"]
-    time.sleep(.1)
+    global last_reached_pin
+    start_point_found = False
+    while not start_point_found:
+        resp = requests.get(url=url)
+        data = resp.json()
+        rail_sections = data["track"]["rail_sections"]
+        for key in pins:
+            pins[key]["state"] = rail_sections[key]["state"]
+            if pins[key]["state"] == 0:
+                last_reached_pin = key
+                start_point_found = True
+        time.sleep(.1)
+
 
 
 def tracking():
     global last_reached_pin
-    next_pin = pins[last_reached_pin]["next_pin"]
+    next_pin = str(pins[last_reached_pin]["next_pin"])
     resp = requests.get(url=url)
     data = resp.json()
     req_pin_state = data["track"]["rail_sections"][next_pin]["state"]
-    if req_pin_state == 1:
+    if req_pin_state == 0:
         print(next_pin)
         last_reached_pin = next_pin
 
