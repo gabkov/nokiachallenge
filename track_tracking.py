@@ -63,6 +63,7 @@ def tracking():
     next_next_pin = str(pins[next_pin]["next_pin"])
     req_next_pin_state = data["track"]["rail_sections"][next_next_pin]["state"]
     if req_next_pin_state == 0:
+        print("NEXT_NEXT_PIN!")
         print(next_next_pin)
         last_reached_pin = next_next_pin
         requests.get(url=speed_url + str(pins[next_next_pin]["speed"]))
