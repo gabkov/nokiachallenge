@@ -10,21 +10,21 @@ speed_url = "http://192.168.0.180/motor?params="
 last_reached_pin = "11"
 
 pins = {
-    "11": {"state": 0, "next_pin": 26, "speed": 550},
-    "26": {"state": 0, "next_pin": 24, "speed": 1000},
-    "24": {"state": 0, "next_pin": 23, "speed": 1000},
-    "23": {"state": 0, "next_pin": 34, "speed": 1000},
-    "34": {"state": 0, "next_pin": 33, "speed": 1000},
-    "33": {"state": 0, "next_pin": 31, "speed": 1000},
-    "31": {"state": 0, "next_pin": 32, "speed": 700},
-    "32": {"state": 0, "next_pin": 21, "speed": 600},
-    "21": {"state": 0, "next_pin": 27, "speed": 1000},
-    "27": {"state": 0, "next_pin": 25, "speed": 600},
-    "25": {"state": 0, "next_pin": 13, "speed": 550},
-    "13": {"state": 0, "next_pin": 12, "speed": 600},
-    "12": {"state": 0, "next_pin": 11, "speed": 1000},
-    "35": {"state": 0, "next_pin": 33, "speed": 1000},
-    "22": {"state": 0, "next_pin": 35, "speed": 1000}
+    "11": {"state": 0, "next_pin": 26, "speed": 550, "sleep": .5},
+    "26": {"state": 0, "next_pin": 24, "speed": 1000, "sleep": 0},
+    "24": {"state": 0, "next_pin": 23, "speed": 1000, "sleep": 0},
+    "23": {"state": 0, "next_pin": 34, "speed": 1000, "sleep": 0},
+    "34": {"state": 0, "next_pin": 33, "speed": 1000, "sleep": 0},
+    "33": {"state": 0, "next_pin": 31, "speed": 1000, "sleep": 0},
+    "31": {"state": 0, "next_pin": 32, "speed": 700, "sleep": 0},
+    "32": {"state": 0, "next_pin": 21, "speed": 600, "sleep": 0},
+    "21": {"state": 0, "next_pin": 27, "speed": 1000, "sleep": 0},
+    "27": {"state": 0, "next_pin": 25, "speed": 600, "sleep": 0},
+    "25": {"state": 0, "next_pin": 13, "speed": 800, "sleep": 0},
+    "13": {"state": 0, "next_pin": 12, "speed": 600, "sleep": .1},
+    "12": {"state": 0, "next_pin": 11, "speed": 1000, "sleep": 0},
+    "35": {"state": 0, "next_pin": 33, "speed": 1000, "sleep": 0},
+    "22": {"state": 0, "next_pin": 35, "speed": 1000, "sleep": 0}
 }
 
 
@@ -58,6 +58,7 @@ def tracking():
     if req_pin_state == 0:
         print(next_pin)
         last_reached_pin = next_pin
+        time.sleep(pins[next_pin]["sleep"])
         requests.get(url=speed_url + str(pins[next_pin]["speed"]))
 
     next_next_pin = str(pins[next_pin]["next_pin"])
