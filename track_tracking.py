@@ -59,6 +59,7 @@ def tracking():
         print(next_pin)
         last_reached_pin = next_pin
         requests.get(url=speed_url + str(pins[next_pin]["speed"]))
+
     next_next_pin = str(pins[next_pin]["next_pin"])
     req_next_pin_state = data["track"]["rail_sections"][next_next_pin]["state"]
     if req_next_pin_state == 0:
@@ -66,7 +67,7 @@ def tracking():
         last_reached_pin = next_next_pin
         requests.get(url=speed_url + str(pins[next_next_pin]["speed"]))
 
-    #timestamp = int(time.time() * 1000)
+    # timestamp = int(time.time() * 1000)
     # for key in pins:
     #     if pins[key]["state"] == 0:
     #         if rail_sections[key]["state"] == 1 and pins[key]["timestamp"] + 100 < timestamp:
@@ -79,7 +80,6 @@ def tracking():
     #             pins[key]["timestamp"] = timestamp
     # if last_reached_pin != prev_pin:
     #     print(last_reached_pin)
-
 
     time.sleep(.1)
 
