@@ -10,6 +10,7 @@ speed_url = "http://192.168.0.180/motor?params="
 last_reached_pin = "11"
 
 alternate_routing = False
+alternate_routing_time = int(time.time())
 
 pins = {
     "11": {"state": 0, "next_pin": 26, "speed": 550, "sleep": .3},
@@ -54,8 +55,13 @@ def startup():
 def tracking():
     global last_reached_pin
     global alternate_routing
+    global alternate_routing_time
+    current_time = int(time.time())
+    if alternate_routing_time + 3 < current_time:
+        alternate_routing = False
     if alternate_routing:
         pins["24"]["next_pin"] = 22
+        alternate_routing_time = current_time
     else:
         pins["24"]["next_pin"] = 23
     next_pin = str(pins[last_reached_pin]["next_pin"])
