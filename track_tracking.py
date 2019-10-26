@@ -9,22 +9,24 @@ speed_url = "http://192.168.0.180/motor?params="
 
 last_reached_pin = "11"
 
+alternate_routing = False
+
 pins = {
-    "11": {"state": 0, "next_pin": 26, "speed": 550, "sleep": .5},
+    "11": {"state": 0, "next_pin": 26, "speed": 550, "sleep": .3},
     "26": {"state": 0, "next_pin": 24, "speed": 1000, "sleep": 0},
     "24": {"state": 0, "next_pin": 23, "speed": 1000, "sleep": 0},
     "23": {"state": 0, "next_pin": 34, "speed": 1000, "sleep": 0},
     "34": {"state": 0, "next_pin": 33, "speed": 1000, "sleep": 0},
     "33": {"state": 0, "next_pin": 31, "speed": 1000, "sleep": 0},
-    "31": {"state": 0, "next_pin": 32, "speed": 700, "sleep": 0},
-    "32": {"state": 0, "next_pin": 21, "speed": 600, "sleep": 0},
+    "31": {"state": 0, "next_pin": 32, "speed": 600, "sleep": 0},
+    "32": {"state": 0, "next_pin": 21, "speed": 780, "sleep": 0},
     "21": {"state": 0, "next_pin": 27, "speed": 1000, "sleep": 0},
     "27": {"state": 0, "next_pin": 25, "speed": 600, "sleep": 0},
     "25": {"state": 0, "next_pin": 13, "speed": 800, "sleep": 0},
-    "13": {"state": 0, "next_pin": 12, "speed": 600, "sleep": .1},
+    "13": {"state": 0, "next_pin": 12, "speed": 600, "sleep": .2},
     "12": {"state": 0, "next_pin": 11, "speed": 1000, "sleep": 0},
-    "35": {"state": 0, "next_pin": 33, "speed": 1000, "sleep": 0},
-    "22": {"state": 0, "next_pin": 35, "speed": 1000, "sleep": 0}
+    "22": {"state": 0, "next_pin": 35, "speed": 1000, "sleep": 0},
+    "35": {"state": 0, "next_pin": 33, "speed": 700, "sleep": 0}
 }
 
 
@@ -51,6 +53,11 @@ def startup():
 
 def tracking():
     global last_reached_pin
+    global alternate_routing
+    if alternate_routing:
+        pins["24"]["next_pin"] = 22
+    else:
+        pins["24"]["next_pin"] = 23
     next_pin = str(pins[last_reached_pin]["next_pin"])
     resp = requests.get(url=url)
     data = resp.json()
@@ -58,7 +65,10 @@ def tracking():
     if req_pin_state == 0:
         print(next_pin)
         last_reached_pin = next_pin
-        time.sleep(pins[next_pin]["sleep"])
+        if pins[next_pin]["sleep"] > 0:
+            time.sleep(pins[next_pin]["sleep"])
+            print("SLEEP")
+            print(pins[next_pin]["sleep"])
         requests.get(url=speed_url + str(pins[next_pin]["speed"]))
 
     next_next_pin = str(pins[next_pin]["next_pin"])
@@ -68,6 +78,14 @@ def tracking():
         print(next_next_pin)
         last_reached_pin = next_next_pin
         requests.get(url=speed_url + str(pins[next_next_pin]["speed"]))
+
+    next_next_next_pin = str(pins[next_next_pin]["next_pin"])
+    req_next_next_pin_state = data["track"]["rail_sections"][next_next_next_pin]["state"]
+    if req_next_next_pin_state  == 0:
+        print("NEXT_NEXT_NEXT_PIN!")
+        print(next_next_next_pin)
+        last_reached_pin = next_next_next_pin
+        requests.get(url=speed_url + str(pins[next_next_next_pin]["speed"]))
 
     # timestamp = int(time.time() * 1000)
     # for key in pins:
