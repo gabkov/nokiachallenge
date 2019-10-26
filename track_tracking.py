@@ -88,9 +88,9 @@ def tracking():
 
 def main():
     startup()
-    #train_tracking_thread = threading.Thread(target=continuous_tracking, daemon=True, name="trainTrackingThread")
-    #train_tracking_thread.start()
-    continuous_tracking()
+    train_tracking_thread = threading.Thread(target=continuous_tracking, daemon=True, name="trainTrackingThread")
+    train_tracking_thread.start()
+    # continuous_tracking()
     while True:
         time.sleep(1)
         #print("main is running")
