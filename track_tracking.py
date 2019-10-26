@@ -34,6 +34,7 @@ def continuous_tracking():
 
 
 def startup():
+    requests.get(url=speed_url + "600")
     global last_reached_pin
     start_point_found = False
     while not start_point_found:
@@ -48,7 +49,6 @@ def startup():
         time.sleep(.1)
 
 
-
 def tracking():
     global last_reached_pin
     next_pin = str(pins[last_reached_pin]["next_pin"])
@@ -59,7 +59,12 @@ def tracking():
         print(next_pin)
         last_reached_pin = next_pin
         requests.get(url=speed_url + str(pins[next_pin]["speed"]))
-
+    next_next_pin = str(pins[next_pin]["next_pin"])
+    req_next_pin_state = data["track"]["rail_sections"][next_next_pin]["state"]
+    if req_next_pin_state == 0:
+        print(next_next_pin)
+        last_reached_pin = next_next_pin
+        requests.get(url=speed_url + str(pins[next_next_pin]["speed"]))
 
     #timestamp = int(time.time() * 1000)
     # for key in pins:
