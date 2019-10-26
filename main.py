@@ -20,38 +20,30 @@ time.sleep(2)
 #out = cv2.VideoWriter('output7.avi', fourcc, 20.0,(int(cap.get(3)), int(cap.get(4))))
 
 while True:
-    ret, frame = cap.read()
+    ret, image = cap.read()
+# define the list of boundaries
+    boundaries = [
+        ([86, 31, 4], [246, 96, 57])
+        #([17, 15, 100], [50, 56, 200]),
+        #([25, 146, 190], [62, 174, 250]),
+        #([103, 86, 65], [145, 133, 128])
+    ]
 
-    # converting frame(img) from BGR (Blue-Green-Red) to HSV (hue-saturation-value)
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    # loop over the boundaries
+    for (lower, upper) in boundaries:
+        # create NumPy arrays from the boundaries
+        lower = np.array(lower, dtype="uint8")
+        upper = np.array(upper, dtype="uint8")
 
-    # defining the range of Yellow color
-    yellow_lower = np.array([22, 60, 200], np.uint8)
-    yellow_upper = np.array([60, 255, 255], np.uint8)
+        # find the colors within the specified boundaries and apply
+        # the mask
+        mask = cv2.inRange(image, lower, upper)
+        output = cv2.bitwise_and(image, image, mask=mask)
 
-    # finding the range yellow colour in the image
-    yellow = cv2.inRange(hsv, yellow_lower, yellow_upper)
+        imageOut = np.hstack([image, output])
 
-    # Morphological transformation, Dilation
-    kernal = np.ones((5, 5), "uint8")
-    blue = cv2.dilate(yellow, kernal)
-    res = cv2.bitwise_and(frame, frame, mask=yellow)
-
-    # Tracking Colour (Yellow)
-    contours,hierarchy =cv2.findContours(yellow,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-
-    for pic, contour in enumerate(contours):
-        area = cv2.contourArea(contour)
-        if(area > 300):
-            x, y, w, h = cv2.boundingRect(contour)
-            img = cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 3)
-
-    #Display results
-    cv2.imshow("Yellow", res)
-
-    # out.write(frame)
-
-    cv2.imshow('train-path', frame)
+    # Display the resulting frame
+    cv2.imshow('RGB', imageOut)
 
     if cv2.waitKey(50) & 0xFF == ord('q'):
         break
