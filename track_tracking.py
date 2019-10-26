@@ -7,7 +7,7 @@ url = 'http://192.168.0.100:5000/rest/items'
 last_reached_pin = "11"
 
 pins = {
-    "11": 0,
+    "11": {"state": 0, "timestamp": 0},
     "12": 0,
     "13": 0,
     "21": 0,
@@ -34,8 +34,10 @@ def startup():
     resp = requests.get(url=url)
     data = resp.json()
     rail_sections = data["track"]["rail_sections"]
+    timestamp = int(round(time.time() * 1000))
     for key in pins:
-        pins[key] = rail_sections[key]["state"]
+        pins[key]["state"] = rail_sections[key]["state"]
+        pins[key]["timestamp"] = timestamp
     time.sleep(0.1)
 
 
@@ -45,14 +47,17 @@ def tracking():
     resp = requests.get(url=url)
     data = resp.json()
     rail_sections = data["track"]["rail_sections"]
+    timestamp = int(round(time.time() * 1000))
     for key in pins:
-        if pins[key] == 0:
-            if rail_sections[key]["state"] == 1:
-                pins[key] = 1
+        if pins[key]["state"] == 0:
+            if rail_sections[key]["state"] == 1 and pins[key]["timestamp"] + 100 < timestamp:
+                pins[key]["state"] = 1
+                pins[key]["timestamp"] = timestamp
                 last_reached_pin = key
         if pins[key] == 1:
-            if rail_sections[key]["state"] == 0:
-                pins[key] = 0
+            if rail_sections[key]["state"] == 0 and pins[key]["timestamp"] + 100 < timestamp:
+                pins[key]["state"] = 0
+                pins[key]["timestamp"] = timestamp
     if last_reached_pin != prev_pin:
         print(last_reached_pin)
     time.sleep(.1)
