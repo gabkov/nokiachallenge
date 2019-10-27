@@ -3,6 +3,8 @@ import threading
 
 import requests
 
+CONTROL = True
+
 url = 'http://192.168.0.100:5000/rest/items'
 
 speed_url = "http://192.168.0.180/motor?params="
@@ -39,19 +41,23 @@ counter = int(time.time())
 def obstacle_moved_away():
     print("possible obstacle moved away called")
     global way_is_clear
+    global CONTROL
     if not way_is_clear:
         way_is_clear = True
-        requests.get(url=speed_url + str(pins[last_reached_pin]["speed"]))
+        if CONTROL:
+            requests.get(url=speed_url + str(pins[last_reached_pin]["speed"]))
 
 
 def possible_obstacle():
     print("possible obstacle called")
     global counter
     global way_is_clear
+    global CONTROL
     if last_reached_pin in ["13", "11", "26"] and way_is_clear:
-        requests.get(url=speed_url + "0")
         counter = int(time.time())
         way_is_clear = False
+        if CONTROL:
+            requests.get(url=speed_url + "0")
 
 
 def continuous_tracking():
@@ -60,8 +66,10 @@ def continuous_tracking():
 
 
 def startup():
-    requests.get(url=speed_url + "600")
     global last_reached_pin
+    global CONTROL
+    if CONTROL:
+        requests.get(url=speed_url + "600")
     start_point_found = False
     while not start_point_found:
         resp = requests.get(url=url)
@@ -79,6 +87,7 @@ def tracking():
     global last_reached_pin
     global alternate_routing
     global alternate_routing_time
+    global CONTROL
     current_time = int(time.time())
     if alternate_routing_time + 3 < current_time:
         alternate_routing = False
@@ -99,9 +108,11 @@ def tracking():
             print("SLEEP")
             print(pins[next_pin]["sleep"])
         if failsafe:
-            requests.get(url=speed_url + "0")
+            if CONTROL:
+                requests.get(url=speed_url + "0")
             time.sleep(pins[next_pin]["stop"])
-        requests.get(url=speed_url + str(pins[next_pin]["speed"]))
+        if CONTROL:
+            requests.get(url=speed_url + str(pins[next_pin]["speed"]))
 
     next_next_pin = str(pins[next_pin]["next_pin"])
     req_next_pin_state = data["track"]["rail_sections"][next_next_pin]["state"]
@@ -110,9 +121,11 @@ def tracking():
         print(next_next_pin)
         last_reached_pin = next_next_pin
         if failsafe:
-            requests.get(url=speed_url + "0")
+            if CONTROL:
+                requests.get(url=speed_url + "0")
             time.sleep(pins[next_pin]["stop"])
-        requests.get(url=speed_url + str(pins[next_next_pin]["speed"]))
+        if CONTROL:
+            requests.get(url=speed_url + str(pins[next_next_pin]["speed"]))
 
     next_next_next_pin = str(pins[next_next_pin]["next_pin"])
     req_next_next_pin_state = data["track"]["rail_sections"][next_next_next_pin]["state"]
@@ -121,9 +134,11 @@ def tracking():
         print(next_next_next_pin)
         last_reached_pin = next_next_next_pin
         if failsafe:
-            requests.get(url=speed_url + "0")
+            if CONTROL:
+                requests.get(url=speed_url + "0")
             time.sleep(pins[next_pin]["stop"])
-        requests.get(url=speed_url + str(pins[next_next_next_pin]["speed"]))
+        if CONTROL:
+            requests.get(url=speed_url + str(pins[next_next_next_pin]["speed"]))
 
     # timestamp = int(time.time() * 1000)
     # for key in pins:
