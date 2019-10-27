@@ -13,22 +13,24 @@ alternate_routing = False
 alternate_routing_time = int(time.time())
 
 pins = {
-    "11": {"state": 0, "next_pin": 26, "speed": 550, "sleep": .3},
-    "26": {"state": 0, "next_pin": 24, "speed": 1000, "sleep": 0},
-    "24": {"state": 0, "next_pin": 23, "speed": 1000, "sleep": 0},
-    "23": {"state": 0, "next_pin": 34, "speed": 1000, "sleep": 0},
-    "34": {"state": 0, "next_pin": 33, "speed": 1000, "sleep": 0},
-    "33": {"state": 0, "next_pin": 31, "speed": 1000, "sleep": 0},
-    "31": {"state": 0, "next_pin": 32, "speed": 600, "sleep": 0},
-    "32": {"state": 0, "next_pin": 21, "speed": 780, "sleep": 0},
-    "21": {"state": 0, "next_pin": 27, "speed": 1000, "sleep": 0},
-    "27": {"state": 0, "next_pin": 25, "speed": 600, "sleep": 0},
-    "25": {"state": 0, "next_pin": 13, "speed": 800, "sleep": 0},
-    "13": {"state": 0, "next_pin": 12, "speed": 600, "sleep": .2},
-    "12": {"state": 0, "next_pin": 11, "speed": 1000, "sleep": 0},
-    "22": {"state": 0, "next_pin": 35, "speed": 1000, "sleep": 0},
-    "35": {"state": 0, "next_pin": 33, "speed": 700, "sleep": 0}
+    "11": {"state": 0, "next_pin": 26, "speed": 550, "sleep": .3, "stop": 3},
+    "26": {"state": 0, "next_pin": 24, "speed": 1000, "sleep": 0, "stop": 0},
+    "24": {"state": 0, "next_pin": 23, "speed": 1000, "sleep": 0, "stop": 0},
+    "23": {"state": 0, "next_pin": 34, "speed": 1000, "sleep": 0, "stop": 0},
+    "34": {"state": 0, "next_pin": 33, "speed": 1000, "sleep": 0, "stop": 0},
+    "33": {"state": 0, "next_pin": 31, "speed": 1000, "sleep": 0, "stop": 0},
+    "31": {"state": 0, "next_pin": 32, "speed": 600, "sleep": 0, "stop": 3},
+    "32": {"state": 0, "next_pin": 21, "speed": 780, "sleep": 0, "stop": 0},
+    "21": {"state": 0, "next_pin": 27, "speed": 1000, "sleep": 0, "stop": 0},
+    "27": {"state": 0, "next_pin": 25, "speed": 600, "sleep": 0, "stop": 0},
+    "25": {"state": 0, "next_pin": 13, "speed": 800, "sleep": 0, "stop": 0},
+    "13": {"state": 0, "next_pin": 12, "speed": 600, "sleep": .2, "stop": 3},
+    "12": {"state": 0, "next_pin": 11, "speed": 1000, "sleep": 0, "stop": 0},
+    "22": {"state": 0, "next_pin": 35, "speed": 1000, "sleep": 0, "stop": 0},
+    "35": {"state": 0, "next_pin": 33, "speed": 700, "sleep": 0, "stop": 0}
 }
+
+failsafe = False
 
 
 def continuous_tracking():
@@ -59,7 +61,7 @@ def tracking():
     current_time = int(time.time())
     if alternate_routing_time + 3 < current_time:
         alternate_routing = False
-    if alternate_routing:
+    if alternate_routing or failsafe:
         pins["24"]["next_pin"] = 22
         alternate_routing_time = current_time
     else:
@@ -75,6 +77,9 @@ def tracking():
             time.sleep(pins[next_pin]["sleep"])
             print("SLEEP")
             print(pins[next_pin]["sleep"])
+        if failsafe:
+            requests.get(url=speed_url + "0")
+            time.sleep(pins[next_pin]["stop"])
         requests.get(url=speed_url + str(pins[next_pin]["speed"]))
 
     next_next_pin = str(pins[next_pin]["next_pin"])
@@ -83,6 +88,9 @@ def tracking():
         print("NEXT_NEXT_PIN!")
         print(next_next_pin)
         last_reached_pin = next_next_pin
+        if failsafe:
+            requests.get(url=speed_url + "0")
+            time.sleep(pins[next_pin]["stop"])
         requests.get(url=speed_url + str(pins[next_next_pin]["speed"]))
 
     next_next_next_pin = str(pins[next_next_pin]["next_pin"])
@@ -91,6 +99,9 @@ def tracking():
         print("NEXT_NEXT_NEXT_PIN!")
         print(next_next_next_pin)
         last_reached_pin = next_next_next_pin
+        if failsafe:
+            requests.get(url=speed_url + "0")
+            time.sleep(pins[next_pin]["stop"])
         requests.get(url=speed_url + str(pins[next_next_next_pin]["speed"]))
 
     # timestamp = int(time.time() * 1000)
