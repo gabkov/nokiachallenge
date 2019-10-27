@@ -39,8 +39,9 @@ counter = int(time.time())
 def obstacle_moved_away():
     print("possible obstacle moved away called")
     global way_is_clear
-    way_is_clear = True
-    requests.get(url=speed_url + str(pins[last_reached_pin]["speed"]))
+    if not way_is_clear:
+        way_is_clear = True
+        requests.get(url=speed_url + str(pins[last_reached_pin]["speed"]))
 
 
 def possible_obstacle():
