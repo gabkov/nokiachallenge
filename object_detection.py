@@ -3,27 +3,20 @@ import cv2
 import time
 import track_tracking
 
+local = False
+save_to_file = False
 
 def main_loop():
-    #file_name = 'C:/Users/csiga/Downloads/nokiavideos/pivideo3.mp4'
+    if local:
+        file_name = './output12.avi'
+        cap = cv2.VideoCapture(file_name)
+    else:
+        cap = cv2.VideoCapture(0)
+        cap.open('http://192.168.0.190:8080/stream/video.mjpeg')
 
-    file_name = './output12.avi'
-
-    #cap = cv2.VideoCapture(file_name)
-
-    #cap = cv2.VideoCapture(0)
-
-    # time.sleep(2)
-
-    #imageMat = np.array((4, 5, 4), np.uint8)
-    cap = cv2.VideoCapture(0)
-    cap.open('http://192.168.0.190:8080/stream/video.mjpeg')
-    # cap.read(imageMat)
-
-
-    # Define the codec and create VideoWriter object
-    #fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    #out = cv2.VideoWriter('new3.avi', fourcc, 20.0,(int(cap.get(3)), int(cap.get(4))))
+    if save_to_file:
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        out = cv2.VideoWriter('new5.avi', fourcc, 20.0,(int(cap.get(3)), int(cap.get(4))))
 
     frame_counter = 0
     detect_counter = 0
@@ -62,11 +55,13 @@ def main_loop():
         if frame_counter % 5 == 0:
             if detect_counter >= 2:
                 if last != "possible":
-                    track_tracking.possible_obstacle()
+                    if not local:
+                        track_tracking.possible_obstacle()
                     last = "possible"
             else:
                 if last != "moved":
-                    track_tracking.obstacle_moved_away()
+                    if not local:
+                        track_tracking.obstacle_moved_away()
                     last = "moved"
 
             detect_counter = 0
@@ -75,14 +70,15 @@ def main_loop():
         imageOut = np.hstack([frame])
 
         cv2.imshow("Frame", imageOut)
-
-        # out.write(frame)
+        if save_to_file:
+            out.write(frame)
 
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
 
     cap.release()
-    # out.release()
+    if save_to_file:
+        out.release()
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":

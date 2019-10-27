@@ -37,7 +37,7 @@ pins = {
     "35": {"state": 0, "next_pin": 33, "speed": 700, "sleep": 0, "stop": 0}
 }
 
-failsafe = False
+failsafe = True
 way_is_clear = True
 
 counter = int(time.time())
