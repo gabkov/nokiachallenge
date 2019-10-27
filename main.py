@@ -1,10 +1,11 @@
 import numpy as np
 import cv2
 import time
+import track_tracking
 
 
 #file_name = 'C:/Users/csiga/Downloads/nokiavideos/pivideo3.mp4'
-file_name = 'D:/codes/hackaton/nokia/output12.avi'
+file_name = '/Users/bozsadam/PycharmProjects/nokiachallenge/output12.avi'
 
 cap = cv2.VideoCapture(file_name)
 
@@ -22,6 +23,9 @@ cap = cv2.VideoCapture(file_name)
 #fourcc = cv2.VideoWriter_fourcc(*'XVID')
 #out = cv2.VideoWriter('new3.avi', fourcc, 20.0,(int(cap.get(3)), int(cap.get(4))))
 
+frame_counter = 0
+detect_counter = 0
+
 while True:
     ret, frame = cap.read()
 
@@ -35,7 +39,18 @@ while True:
     legos = lego_cascade.detectMultiScale(gray, scaleFactor=1.01, minNeighbors=65)
     for(x, y, w, h) in legos:
         print("x: {} y: {} w: {} h: {}".format(x, y, w, h))
-        frame = cv2.rectangle(frame, (x, y), (x+y, y+h), (0, 255, 0), 1)
+        if(w > 10):
+            frame = cv2.rectangle(frame, (x, y), (x+y, y+h), (0, 255, 0), 1)
+            detect_counter += 1
+
+
+    frame_counter += 1
+    if frame_counter % 5 == 0:
+        if detect_counter >= 2:
+            track_tracking.possible_obstacle()
+
+        detect_counter = 0
+
 
     imageOut = np.hstack([frame])
 
