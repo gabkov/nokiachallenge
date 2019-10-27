@@ -6,17 +6,17 @@ import track_tracking
 
 def main_loop():
     #file_name = 'C:/Users/csiga/Downloads/nokiavideos/pivideo3.mp4'
-    file_name = 'D:/codes/hackaton/nokia/output12.avi'
+    #file_name = 'D:/codes/hackaton/nokia/output12.avi'
 
-    cap = cv2.VideoCapture(file_name)
+    #cap = cv2.VideoCapture(file_name)
 
     #cap = cv2.VideoCapture(0)
 
     # time.sleep(2)
 
     #imageMat = np.array((4, 5, 4), np.uint8)
-    #cap = cv2.VideoCapture(0)
-    #cap.open('http://192.168.0.190:8080/stream/video.mjpeg')
+    cap = cv2.VideoCapture(0)
+    cap.open('http://192.168.0.190:8080/stream/video.mjpeg')
     # cap.read(imageMat)
 
 
@@ -28,10 +28,21 @@ def main_loop():
     detect_counter = 0
     last = "possible"
 
+    
+    width = cap.get(3)
+    height = cap.get(4)
+
+    cropped_width_start = int(width/4)
+    cropped_width_end = int(width/1.07)
+
+    cropped_height_start = int(height/2.4)
+    cropped_height_end = int(height/1.3)
+
     while True:
         ret, frame = cap.read()
 
-        frame = frame[80:300, 100:185]
+        #frame = frame[80:300, 100:185]
+        frame = frame[cropped_width_start:cropped_width_end, cropped_height_start: cropped_height_end]
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -50,11 +61,11 @@ def main_loop():
         if frame_counter % 5 == 0:
             if detect_counter >= 2:
                 if last != "possible":
-                    #track_tracking.possible_obstacle()
+                    track_tracking.possible_obstacle()
                     last = "possible"
             else:
                 if last != "moved":
-                    #track_tracking.obstacle_moved_away()
+                    track_tracking.obstacle_moved_away()
                     last = "moved"
 
             detect_counter = 0
