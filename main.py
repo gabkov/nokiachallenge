@@ -4,7 +4,7 @@ import time
 
 
 #file_name = 'C:/Users/csiga/Downloads/nokiavideos/pivideo3.mp4'
-file_name = 'D:/codes/hackaton/nokia/output6.avi'
+file_name = 'D:/codes/hackaton/nokia/output12.avi'
 
 cap = cv2.VideoCapture(file_name)
 
@@ -32,7 +32,7 @@ while True:
     lego_cascade = cv2.CascadeClassifier("cascade.xml")
 
 
-    legos = lego_cascade.detectMultiScale(gray, scaleFactor=1.01, minNeighbors=50)
+    legos = lego_cascade.detectMultiScale(gray, scaleFactor=1.01, minNeighbors=65)
     for(x, y, w, h) in legos:
         print("x: {} y: {} w: {} h: {}".format(x, y, w, h))
         frame = cv2.rectangle(frame, (x, y), (x+y, y+h), (0, 255, 0), 1)
