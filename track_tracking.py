@@ -21,7 +21,7 @@ pins = {
     "23": {"state": 0, "next_pin": 34, "speed": 1000, "sleep": 0, "stop": 0},
     "34": {"state": 0, "next_pin": 33, "speed": 1000, "sleep": 0, "stop": 0},
     "33": {"state": 0, "next_pin": 31, "speed": 1000, "sleep": 0, "stop": 0},
-    "31": {"state": 0, "next_pin": 32, "speed": 600, "sleep": 0, "stop": 3},
+    "31": {"state": 0, "next_pin": 32, "speed": 700, "sleep": 0, "stop": 3},
     "32": {"state": 0, "next_pin": 21, "speed": 780, "sleep": 0, "stop": 0},
     "21": {"state": 0, "next_pin": 27, "speed": 1000, "sleep": 0, "stop": 0},
     "27": {"state": 0, "next_pin": 25, "speed": 600, "sleep": 0, "stop": 0},
@@ -166,11 +166,11 @@ def main():
     train_tracking_thread = threading.Thread(target=continuous_tracking, daemon=True, name="trainTrackingThread")
     train_tracking_thread.start()
     # continuous_tracking()
-    # while True:
-    #     time.sleep(1)
+    while True:
+        time.sleep(1)
         #print("main is running")
         #print("current threads: ")
-        #print(threading.enumerate())
+        print(threading.enumerate())
 
 
 if __name__ == '__main__':
