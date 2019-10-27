@@ -40,7 +40,7 @@ def obstacle_moved_away():
     print("possible obstacle moved away called")
     global way_is_clear
     way_is_clear = True
-    requests.get(url=speed_url + str(pins[last_reached_pin]["speed"]))
+   # requests.get(url=speed_url + str(pins[last_reached_pin]["speed"]))
 
 
 def possible_obstacle():
@@ -48,7 +48,7 @@ def possible_obstacle():
     global counter
     global way_is_clear
     if last_reached_pin in ["13", "11", "26"] and way_is_clear:
-        requests.get(url=speed_url + "0")
+      #  requests.get(url=speed_url + "0")
         counter = int(time.time())
         way_is_clear = False
 
@@ -150,8 +150,8 @@ def main():
     train_tracking_thread = threading.Thread(target=continuous_tracking, daemon=True, name="trainTrackingThread")
     train_tracking_thread.start()
     # continuous_tracking()
-    while True:
-        time.sleep(1)
+    # while True:
+    #     time.sleep(1)
         #print("main is running")
         #print("current threads: ")
         #print(threading.enumerate())

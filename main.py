@@ -48,6 +48,8 @@ while True:
     if frame_counter % 5 == 0:
         if detect_counter >= 2:
             track_tracking.possible_obstacle()
+        else:
+            track_tracking.obstacle_moved_away()
 
         detect_counter = 0
 
