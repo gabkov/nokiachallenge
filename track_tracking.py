@@ -27,7 +27,7 @@ pins = {
     "34": {"state": 0, "next_pin": 33, "speed": 1000, "sleep": 0, "stop": 0},
     "33": {"state": 0, "next_pin": 31, "speed": 1000, "sleep": 0, "stop": 0},
     "31": {"state": 0, "next_pin": 32, "speed": 700, "sleep": 0, "stop": 3},
-    "32": {"state": 0, "next_pin": 21, "speed": 780, "sleep": 0, "stop": 0},
+    "32": {"state": 0, "next_pin": 21, "speed": 950, "sleep": 0, "stop": 0},
     "21": {"state": 0, "next_pin": 27, "speed": 1000, "sleep": 0, "stop": 0},
     "27": {"state": 0, "next_pin": 25, "speed": 600, "sleep": 0, "stop": 0},
     "25": {"state": 0, "next_pin": 13, "speed": 800, "sleep": 0, "stop": 0},
@@ -37,7 +37,7 @@ pins = {
     "35": {"state": 0, "next_pin": 33, "speed": 700, "sleep": 0, "stop": 0}
 }
 
-failsafe = False
+failsafe = True
 way_is_clear = True
 
 counter = int(time.time())
@@ -98,7 +98,7 @@ def tracking():
     if alternate_routing_time + 3 < current_time:
         alternate_routing = False
     if alternate_routing or failsafe:
-        pins["24"]["next_pin"] = 22
+        pins["24"]["next_pin"] = 23
         alternate_routing_time = current_time
     else:
         pins["24"]["next_pin"] = 23
