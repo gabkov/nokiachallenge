@@ -3,7 +3,7 @@ import threading
 import object_detection
 import requests
 
-OFFLINE = True
+OFFLINE = False
 
 CONTROL = True
 
