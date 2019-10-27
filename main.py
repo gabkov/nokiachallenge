@@ -25,6 +25,7 @@ cap = cv2.VideoCapture(file_name)
 
 frame_counter = 0
 detect_counter = 0
+last = "possible"
 
 while True:
     ret, frame = cap.read()
@@ -47,9 +48,13 @@ while True:
     frame_counter += 1
     if frame_counter % 5 == 0:
         if detect_counter >= 2:
-            track_tracking.possible_obstacle()
+            if last != "possible":
+                track_tracking.possible_obstacle()
+                last = "possible"
         else:
-            track_tracking.obstacle_moved_away()
+            if last != "moved":
+                track_tracking.obstacle_moved_away()
+                last = "moved"
 
         detect_counter = 0
 
