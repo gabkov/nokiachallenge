@@ -33,6 +33,14 @@ pins = {
 failsafe = False
 
 
+def obstacle_moved_away():
+    print("possible obstacle moved away called")
+
+
+def possible_obstacle():
+    print("possible obstacle called")
+
+
 def continuous_tracking():
     while True:
         tracking()
