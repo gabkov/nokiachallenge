@@ -1,6 +1,6 @@
 import time
 import threading
-
+import object_detection
 import requests
 
 url = 'http://192.168.0.100:5000/rest/items'
@@ -150,12 +150,14 @@ def main():
     startup()
     train_tracking_thread = threading.Thread(target=continuous_tracking, daemon=True, name="trainTrackingThread")
     train_tracking_thread.start()
+    object_detection_thread = threading.Thread(target=object_detection.main_loop, daemon=True, name="objectDetectionThread")
+    object_detection_thread.start()
     # continuous_tracking()
-    # while True:
-    #     time.sleep(1)
+    while True:
+        time.sleep(1)
         #print("main is running")
         #print("current threads: ")
-        #print(threading.enumerate())
+        print(threading.enumerate())
 
 
 if __name__ == '__main__':

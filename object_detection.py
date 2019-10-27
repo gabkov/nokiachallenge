@@ -6,7 +6,7 @@ import track_tracking
 
 def main_loop():
     #file_name = 'C:/Users/csiga/Downloads/nokiavideos/pivideo3.mp4'
-    file_name = 'D:/codes/hackaton/nokia/output12.avi'
+    file_name = './output12.avi'
 
     cap = cv2.VideoCapture(file_name)
 
