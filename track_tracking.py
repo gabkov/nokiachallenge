@@ -31,14 +31,30 @@ pins = {
 }
 
 failsafe = False
+way_is_clear = True
+
+counter = int(time.time())
 
 
 def obstacle_moved_away():
     print("possible obstacle moved away called")
+    global way_is_clear
+    way_is_clear = True
+    requests.get(url=speed_url + str(pins[last_reached_pin]["speed"]))
 
 
 def possible_obstacle():
     print("possible obstacle called")
+    global counter
+    global way_is_clear
+    if last_reached_pin in ["13", "11", "26"] and way_is_clear:
+        requests.get(url=speed_url + "0")
+        counter = int(time.time())
+        way_is_clear = False
+    while not way_is_clear:
+        if counter + 3 < int(time.time()):
+            obstacle_moved_away()
+        time.sleep(.4)
 
 
 def continuous_tracking():
