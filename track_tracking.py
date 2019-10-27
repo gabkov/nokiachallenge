@@ -3,7 +3,12 @@ import threading
 import object_detection
 import requests
 
+OFFLINE = True
+
 CONTROL = True
+
+if OFFLINE:
+    CONTROL = False
 
 url = 'http://192.168.0.100:5000/rest/items'
 
@@ -62,7 +67,8 @@ def possible_obstacle():
 
 def continuous_tracking():
     while True:
-        tracking()
+        if not OFFLINE:
+            tracking()
 
 
 def startup():
@@ -71,7 +77,7 @@ def startup():
     if CONTROL:
         requests.get(url=speed_url + "600")
     start_point_found = False
-    while not start_point_found:
+    while not start_point_found and not OFFLINE:
         resp = requests.get(url=url)
         data = resp.json()
         rail_sections = data["track"]["rail_sections"]
@@ -172,7 +178,7 @@ def main():
         time.sleep(1)
         #print("main is running")
         #print("current threads: ")
-        print(threading.enumerate())
+        #print(threading.enumerate())
 
 
 if __name__ == '__main__':
