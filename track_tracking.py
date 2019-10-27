@@ -51,10 +51,6 @@ def possible_obstacle():
         requests.get(url=speed_url + "0")
         counter = int(time.time())
         way_is_clear = False
-    while not way_is_clear:
-        if counter + 3 < int(time.time()):
-            obstacle_moved_away()
-        time.sleep(.4)
 
 
 def continuous_tracking():
@@ -141,6 +137,10 @@ def tracking():
     #             pins[key]["timestamp"] = timestamp
     # if last_reached_pin != prev_pin:
     #     print(last_reached_pin)
+
+    while not way_is_clear:
+        if counter + 3 < int(time.time()):
+            obstacle_moved_away()
 
     time.sleep(.1)
 
