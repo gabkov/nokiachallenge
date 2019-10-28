@@ -1,6 +1,6 @@
-venv/
+env/
 .idea/
-
+images/
 
 # Created by https://www.gitignore.io/api/python,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=python,visualstudiocode
@@ -111,7 +111,7 @@ dmypy.json
 .pyre/
 
 ### VisualStudioCode ###
-.vscode/*
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json

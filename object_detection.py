@@ -3,12 +3,12 @@ import cv2
 import time
 import track_tracking
 
-local = False
+local = True
 save_to_file = False
 
 def main_loop():
     if local:
-        file_name = './output12.avi'
+        file_name = './videos/output12.avi'
         cap = cv2.VideoCapture(file_name)
     else:
         cap = cv2.VideoCapture(0)
@@ -40,7 +40,7 @@ def main_loop():
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        lego_cascade = cv2.CascadeClassifier("cascade.xml")
+        lego_cascade = cv2.CascadeClassifier("./cascade/cascade.xml")
 
 
         legos = lego_cascade.detectMultiScale(gray, scaleFactor=1.01, minNeighbors=65)

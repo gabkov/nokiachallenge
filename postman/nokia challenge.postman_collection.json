@@ -10,10 +10,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "{{host}}/items",
 					"host": [
@@ -31,10 +27,6 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "{{host}}/control/track_switch/x/y",
 					"host": [
@@ -55,10 +47,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "{{host}}/track/statistics/lap_time",
 					"host": [
@@ -78,10 +66,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "{{controllhost}}/motor?params=900",
 					"host": [
@@ -105,10 +89,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "{{controllhost}}/motor?params=0",
 					"host": [
@@ -132,10 +112,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "{{controllhost}}/motor?params=1023",
 					"host": [
@@ -155,14 +131,10 @@
 			"response": []
 		},
 		{
-			"name": "Train control 600",
+			"name": "Train control 700",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "{{controllhost}}/motor?params=1023",
 					"host": [
@@ -206,13 +178,13 @@
 	],
 	"variable": [
 		{
-			"id": "eb015b98-0ed2-41fd-97e7-db8864411b0c",
+			"id": "98c3ad04-eaaf-4c7c-9aec-986eac642a52",
 			"key": "host",
 			"value": "http://192.168.0.100:5000/rest",
 			"type": "string"
 		},
 		{
-			"id": "3b4ec2ee-0bd5-4358-b85d-63b59a26ef68",
+			"id": "3a435c78-cb9b-4fc2-a62e-3fbc5c653191",
 			"key": "controllhost",
 			"value": "192.168.0.180",
 			"type": "string"
